@@ -1,0 +1,21 @@
+---
+
+- name: restart tomcat.service
+  service:
+    name: tomcat.service
+    state: restarted
+    daemon_reload: yes
+  listen: restart tomcat
+  become: yes
+
+
+- name: save tomcat info
+  copy:
+    content: >
+      {
+        "Tomcat response": "{{ tomcat_response.stdout }}"
+      }
+    dest: /etc/ansible/facts.d/tomcat.fact
+  listen: restart tomcat
+  become: yes
+

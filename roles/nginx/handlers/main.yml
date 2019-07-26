@@ -1,0 +1,9 @@
+---
+- name: save httpd info
+  copy: 
+    content: >
+      {
+        "Apache version": "{{ httpd_version.stdout }}"
+      }
+    dest: /etc/ansible/facts.d/httpd.fact
+  become: yes

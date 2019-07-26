@@ -1,0 +1,9 @@
+---
+- name: save user details
+  copy: 
+    content: >
+      {
+        "Users": "{{ user_info.stdout_lines }}"
+      }
+    dest: /etc/ansible/facts.d/users.fact
+  become: yes

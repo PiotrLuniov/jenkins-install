@@ -1,0 +1,8 @@
+- name: Basic devops users
+  hosts: all
+
+  roles:
+  - role: user
+    user_name: jenkins
+  - role: jenkins
+  - role: nginx

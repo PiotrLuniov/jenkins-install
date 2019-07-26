@@ -1,0 +1,30 @@
+---
+
+- name: download jenkins.repo
+  get_url:
+    url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+  become: yes
+
+- name: import jenkins key
+  rpm_key:
+    state: present
+    key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+  become: yes
+
+- name: Jenkins dir
+  file: path=/opt/jenkins state=directory recurse=yes owner=jenkins
+  become: yes
+
+- name: install jenkins
+  yum:
+    name: jenkins
+    state: present
+  become: yes
+
+- name: start jenkins
+  service:
+    name: jenkins.service
+    state: started
+    enabled: yes
+  become: yes

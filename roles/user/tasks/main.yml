@@ -1,0 +1,13 @@
+---
+
+- name: Create group
+  group:
+    name: "{{ group_name }}"
+    state: present
+  become: yes
+
+- name: Create user
+  user:
+    name: "{{ user_name }}"
+    group: "{{ group_name }}"
+  become: yes

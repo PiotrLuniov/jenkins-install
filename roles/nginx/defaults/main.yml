@@ -1,0 +1,5 @@
+---
+
+webserver_ip: "192.168.56.21"
+appserver_ip: "192.168.56.22"
+lb_template: "server.conf.j2"

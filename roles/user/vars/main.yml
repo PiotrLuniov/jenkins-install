@@ -1,0 +1,5 @@
+---
+user_home: "/home/{{ user_name }}"
+uids_dict: 
+  devops: 1001
+  tomcat: 1002

@@ -1,0 +1,9 @@
+---
+- name: save java details
+  copy: 
+    content: >
+      {
+        "Java": "{{ java_version.stdout }}"
+      }
+    dest: /etc/ansible/facts.d/java.fact
+  become: yes

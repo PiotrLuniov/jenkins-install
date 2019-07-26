@@ -1,0 +1,13 @@
+---
+- name: Install java
+  yum:
+    name: "java-{{ jdk_version }}-openjdk"
+  notify:
+    - save java details
+  become: yes
+
+- name: Gather java version
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/"//g'
+  register: java_version
+  changed_when: false
+

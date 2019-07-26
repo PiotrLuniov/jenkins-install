@@ -1,0 +1,24 @@
+---
+- name: Install nginx
+  yum: name=nginx
+  become: yes
+
+- name: Replace NGINX config
+  template:
+    src: main.conf.j2
+    dest: /etc/nginx/nginx.conf
+  become: yes
+
+- name: Deploy
+  template:
+    dest: /etc/nginx/conf.d/default.conf
+    src: server.conf.j2
+  become: yes
+
+
+- name: Start
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  become: yes
