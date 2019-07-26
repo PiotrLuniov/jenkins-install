@@ -1,0 +1,8 @@
+---
+# handlers file for roles/jenkins
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+  notify: restart nginx

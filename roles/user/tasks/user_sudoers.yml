@@ -1,0 +1,8 @@
+
+- name: Grand sudo privilegues for user
+  become: yes
+  copy:
+    content: "{{ sudoers }}"
+    dest: /etc/sudoers.d/{{ user_name }}
+    validate: /usr/sbin/visudo -cf %s
+    backup: yes

@@ -1,0 +1,11 @@
+---
+# defaults file for roles/jenkins
+
+jenkins_mode: "node"
+JENKINS_HOME: "/opt/jenkins"
+WAR_PATH: "/usr/share/jenkins.war"
+
+
+options:
+  - "-Duser.home": "{{ JENKINS_HOME }}"
+  - "-Djenkins.install.runSetupWizard": "true"

@@ -1,0 +1,16 @@
+---
+# tasks file for roles/k8s
+
+- import_tasks: install_docker.yml
+
+- import_tasks: os_requirements.yml
+
+- import_tasks: configure_docker_daemon.yml
+
+- import_tasks: install_k8s_base.yml
+
+- import_tasks: cluster_init.yml
+
+- import_tasks: install_metallb.yml
+
+- import_tasks: install_nginx.yml

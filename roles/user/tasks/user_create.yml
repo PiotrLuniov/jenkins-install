@@ -1,0 +1,17 @@
+
+- name: Create group
+  become: yes
+  group:
+    name: "{{ user_group }}"
+    gid: "{{ group_id }}"
+    state: present
+
+- name: Create user
+  become: yes
+  user:
+    name: "{{ user_name }}"
+    group: "{{ user_group }}"
+    uid: "{{ user_id }}"
+    groups: "{{ user_groups }}"
+    home: "{{ user_home }}"
+    create_home: "{{ create_home }}"

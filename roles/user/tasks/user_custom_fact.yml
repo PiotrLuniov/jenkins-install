@@ -1,0 +1,13 @@
+
+- name: Create a directory for custom facts
+  become: yes
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    mode: '0755'
+
+- name: create custom fact (user create)
+  become: yes
+  template:
+    src: user_fact.j2
+    dest: /etc/ansible/facts.d/{{ user_name }}.fact

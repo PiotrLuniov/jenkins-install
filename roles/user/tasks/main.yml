@@ -1,0 +1,8 @@
+---
+# tasks file for user
+
+- import_tasks: user_create.yml
+- import_tasks: user_set_key.yml
+- import_tasks: user_sudoers.yml
+- import_tasks: user_custom_fact.yml
+

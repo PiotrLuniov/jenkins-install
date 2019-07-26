@@ -1,0 +1,52 @@
+
+- name: kubeadm init 
+  ignore_errors: yes
+  shell: >
+    kubeadm init 
+    --pod-network-cidr 10.244.0.0/16 
+    --apiserver-advertise-address {{ hostvars['master'].ansible_host }} 
+    --token abcdef.0123456789abcdef 
+    --skip-certificate-key-print
+
+- name: create folder in root-home
+  file:
+    path: $HOME/.kube
+    state: directory
+
+- name: copy admin config for root
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    owner: root
+    group: root
+    force: yes
+    remote_src: yes
+
+- name: create folder for vagrant user
+  file:
+    path: /home/vagrant/.kube
+    state: directory
+
+- name: copy config for vagrant user
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/vagrant/.kube/config
+    owner: vagrant
+    group: vagrant
+    force: yes
+    remote_src: yes
+
+- name: install kube flannel
+  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+- name: patch daemonsets
+  shell: >
+    kubectl patch daemonsets kube-flannel-ds-amd64 
+    -n kube-system 
+    --patch='{"spec":{"template":{"spec":{"containers":[{"name": "kube-flannel",
+    "args": ["--ip-masq","--kube-subnet-mgr","--iface=eth1"]}]}}}}'
+  ignore_errors: yes
+
+- name: make node on the master
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+  ignore_errors: yes

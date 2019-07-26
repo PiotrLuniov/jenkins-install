@@ -1,0 +1,4 @@
+---
+# defaults file for roles/jenkins_k8s
+
+namespace: default

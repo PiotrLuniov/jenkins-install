@@ -1,0 +1,8 @@
+---
+# vars file for user
+
+name_to_id:
+  devops: 1000
+  admin: 1500
+  tomcat: 1600
+  httpd: 1700

@@ -1,0 +1,7 @@
+localhost ansible_connection=local
+
+master ansible_host=192.168.56.225 ansible_user=vagrant ansible_password=vagrant kube_port=6443
+
+
+#[workers]
+#worker ansible_host=192.168.56.226

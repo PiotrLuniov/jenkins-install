@@ -1,0 +1,78 @@
+---
+# tasks file for roles/jenkins
+
+- debug: msg={{ jenkins_mode }}
+
+- block:
+  - include_role:
+      name: user
+    vars:
+      user_name: jenkins
+
+  - name: download jenkins binary
+    get_url:
+      url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+      dest: "{{ WAR_PATH }}"
+      owner: jenkins
+      group: jenkins
+
+  - name: create JENKINS_HOME
+    file:
+      path: "{{ JENKINS_HOME }}"
+      state: directory
+      owner: jenkins
+      group: jenkins
+
+  - name: run jenkins
+    become_user: jenkins
+    shell: |
+      nohup /usr/bin/java -Duser.home={{ JENKINS_HOME }} \
+      -Djenkins.install.runSetupWizard=false \
+      -Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true \
+      -Dhttps.protocols=TLSv1.2 \
+      -Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode=true \
+      -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 \
+      -Dpermissive-script-security.enabled=true -XX:MaxMetaspaceSize=1g \
+      -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC \
+      -Xms1000m -Xmx3000m -Dcom.sun.management.jmxremote.ssl=false \
+      -jar "{{ WAR_PATH }}" &
+
+
+  # - name: install jenkins repo
+  #   yum_repository:
+  #     name: jenkins
+  #     description: Jenkins-stable
+  #     baseurl: http://pkg.jenkins.io/redhat-stable
+  #     gpgcheck: yes
+
+  # - name: install jenkins repo key
+  #   rpm_key:
+  #     state: present
+  #     key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+  # - name: install jenkins 
+  #   yum:
+  #     name: jenkins
+  #     state: present
+
+
+
+  when: jenkins_mode == "node"
+
+
+- block:
+  - name: set nginx config for jenkins
+    copy:
+      content: |
+        server {
+            listen 80;
+            server_name jenkins;
+
+            location / {
+                proxy_pass "http://127.0.0.1:8080";
+            }
+        }
+      dest: /etc/nginx/conf.d/jenkins.conf
+    notify: "restart nginx"
+  when: jenkins_mode == "lb"
+

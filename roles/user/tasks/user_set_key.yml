@@ -1,0 +1,8 @@
+
+- name: Set authorized keys
+  become: yes
+  authorized_key:
+    user: "{{ user_name }}"
+    state: present
+    key: "{{ item }}"
+  with_file: "{{ authorized_keys }}"

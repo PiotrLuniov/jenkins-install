@@ -1,0 +1,9 @@
+---
+# handlers file for roles/k8s
+
+- name:
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker
+  listen: "reload docker"

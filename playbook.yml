@@ -1,0 +1,31 @@
+
+- name: Install Java Jenkins Nginx
+  hosts: master
+  become: yes
+  tasks:
+  - include_role: 
+      name: java
+
+  - include_role: 
+      name: jenkins
+
+  - include_role: 
+      name: nginx
+      
+  - include_role: 
+      name: jenkins
+    vars:
+      jenkins_mode: lb
+
+
+- name: install jenkins server
+  hosts: master
+  become: yes
+  tasks:
+  - include_role:
+      name: k8s
+  - include_role:
+      name: jenkins_k8s
+    vars:
+      namespace: jenkins
+

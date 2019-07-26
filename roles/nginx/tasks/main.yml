@@ -1,0 +1,18 @@
+---
+# tasks file for roles/nginx
+
+- name: add nginx repository
+  copy:
+    content: |
+      [nginx-stable]
+      name=nginx stable repo
+      baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+      gpgcheck=1
+      enabled=1
+      gpgkey=https://nginx.org/keys/nginx_signing.key
+    dest: /etc/yum.repos.d/nginx.repo 
+
+- name: install nginx
+  yum:
+    name: nginx
+    state: present

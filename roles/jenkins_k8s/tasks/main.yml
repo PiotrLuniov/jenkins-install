@@ -1,0 +1,122 @@
+---
+# tasks file for roles/jenkins_k8s
+
+- name:
+  shell: >
+    kubectl create namespace {{ namespace }}
+  ignore_errors: yes
+
+- name: create PersistentVolume
+  shell: |
+    cat << EOF | kubectl apply --namespace={{ namespace }} -f -
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: localvolume-pv
+    spec:
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - master
+      capacity: 
+        storage: 1Gi
+      accessModes: 
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: local-storage
+      local:
+        path: /tmp
+    EOF
+
+- name: create PersistentVolumeClaim
+  shell: |
+    cat << EOF | kubectl apply --namespace={{ namespace }} -f -
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: localvolume-pvc
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 980Mi
+    EOF
+
+
+
+- name: create deployment
+  shell: |
+    cat << EOF | kubectl apply --namespace={{ namespace }} -f -
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+      name: jenkins-dep
+    spec:
+      replicas: 1
+      template:
+        metadata:
+          labels:
+            app: jenkins
+        spec:
+          containers:
+          - name: jenkins
+            image: jenkins/jenkins:lts
+            ports:
+            - name: jen-port1
+              containerPort: 8080
+            - name: jen-port2
+              containerPort: 50000
+            volumeMounts:
+            - name: jenkins-dep-volume
+              mountPath: /var/jenkins_home
+          volumes:
+          - name: jenkins-dep-volume
+            persistentVolumeClaim:
+              claimName: localvolume-pvc
+    EOF
+
+- name: create service
+  shell: |
+    cat << EOF | kubectl apply --namespace={{ namespace }} -f -
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: jenkins-svc
+    spec:
+      selector:
+        app: jenkins
+      ports:
+      - name: jen-svc-port1
+        port: 8080
+        targetPort: jen-port1
+      - name: jen-svc-port2
+        port: 50000
+        targetPort: jen-port2
+    EOF
+
+
+- name: create ingress rules
+  shell: |
+    cat << EOF | kubectl apply --namespace={{ namespace }} -f -
+    apiVersion: networking.k8s.io/v1beta1
+    kind: Ingress
+    metadata:
+      name: my-ingress
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+    spec:
+      rules:
+      - host: jenkins.k8s.local
+        http:
+          paths:
+          - path: /
+            backend:
+              serviceName: jenkins-svc
+              servicePort: jen-svc-port1
+    EOF

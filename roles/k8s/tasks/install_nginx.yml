@@ -1,0 +1,10 @@
+
+- name: deploy mandatory
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+
+- name: deploy cloud-generic
+  shell: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+
+- name: sleep for 30 seconds for apply setting
+  wait_for:
+    timeout: 30
