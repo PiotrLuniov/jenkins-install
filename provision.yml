@@ -1,0 +1,6 @@
+- name: Provision
+  hosts: all
+  roles: 
+    - java
+    - jenkins 
+    - nginx

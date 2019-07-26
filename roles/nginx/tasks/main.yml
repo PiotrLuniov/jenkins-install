@@ -1,0 +1,19 @@
+- name: Ensure Nginx Installed
+  yum: name=nginx
+  become: yes
+
+- name: Correct jenkins URL
+  copy:
+    src: "/home/student/jenkins/day1/nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+  become: yes
+
+- name: Change hosts
+  copy:
+    src: "/home/student/jenkins/day1/hosts"
+    dest: "/etc/hosts"
+  become: yes
+
+- name: Ensure Nginx Service Running and Enabled
+  service: name=nginx state=started enabled=yes
+  become: yes

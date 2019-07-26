@@ -1,0 +1,14 @@
+---
+- name: Install Java
+  yum:
+    name: "{{java.VERSION}}"
+    state: present
+  become: true
+
+#- name: Correct the alternatives to change default Java version.
+#  alternatives:
+#    name: java
+#    link: /bin/java
+#    path: "{{java.ALTERNATIVES}}"
+
+
