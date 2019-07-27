@@ -1,0 +1,25 @@
+---
+# tasks file for devops_user
+- name: "Creating new group"
+  group:
+    name: "{{ user_group }}"
+    state: present
+    gid: "{{ user_gid }}"
+- name: Create new user
+  user:
+    name: "{{ user_name }}"
+    password: "1234"
+    group: "{{ user_group }}"
+    uid: "{{ user_uid }}"
+    home: "{{ user_home }}"
+- name: Add ssh authorized key
+  authorized_key:
+    user: "{{ user_name }}"
+    state: present
+    key: "{{ user_sshkey }}"
+- name: Add user for sudoerss
+  copy:
+    backup: yes
+    content: "{{ user_sudoers }}"
+    dest: "/etc/sudoers.d/{{ user_name }}"
+    validate: /usr/sbin/visudo -cf %s

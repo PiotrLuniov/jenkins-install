@@ -1,0 +1,4 @@
+---
+# defaults file for jenkins
+jenkins_home: /opt/jenkins
+jenkins_url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war

@@ -1,0 +1,10 @@
+- name: Create Jenkins VM
+  become: true
+  hosts: all
+
+  roles:
+  - common
+  - user
+  - java
+  - jenkins
+  - nginx

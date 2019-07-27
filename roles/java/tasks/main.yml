@@ -1,0 +1,7 @@
+---
+# tasks file for java
+- name: Install java n-version
+  become: true
+  yum:
+    name: "java-{{ jdk_release }}-openjdk"
+    state: installed

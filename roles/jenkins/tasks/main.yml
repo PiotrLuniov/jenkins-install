@@ -1,0 +1,30 @@
+---
+# tasks file for jenkins
+- name: Create home directory
+  become: true
+  file:
+    path: "{{ jenkins_home }}"
+    recurse: yes
+    state: directory
+    owner: jenkins
+    group: jenkins
+
+- name: Download war-file
+  become: true
+  become_user: jenkins
+  get_url:
+    dest: "{{ jenkins_home }}"
+    owner: jenkins
+    url: "{{ jenkins_url }}"
+
+- name: Create jenkins service
+  become: true
+  copy:
+    src: jenkins.service
+    dest: /etc/systemd/system/
+
+- name: Start jenkins
+  become: true
+  shell: |
+    systemctl daemon-reload
+    systemctl start jenkins.service

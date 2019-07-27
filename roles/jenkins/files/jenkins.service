@@ -1,0 +1,23 @@
+[Unit]
+Description=Jenkins
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+Environment='JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false \
+             -Xms512m -Xmx1024m -Dcom.sun.management.jmxremote.ssl=false \
+             -Dhudson.plugins.git.GitSCM.verbose=true \
+             -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London \
+             -Duser.timezone=Europe/Minsk -Dhttps.protocols=TLSv1.2 \
+             -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 \
+             -Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode=true \
+             -Dpermissive-script-security.enabled=true -XX:MaxMetaspaceSize=1g \
+             -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC'
+ExecStart=/usr/bin/java -Duser.home=/opt/jenkins -jar /opt/jenkins/jenkins.war
+Restart=always
+User=jenkins
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target

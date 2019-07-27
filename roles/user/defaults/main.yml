@@ -1,0 +1,9 @@
+---
+# defaults file for devops_user
+user_name: "jenkins"
+user_group: "{{ user_name }}"
+user_sshkey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIu/vxyBtSdwVkqzCEUyu5ior9xg0vgxi+Zr60egkVra+WssLRetuibp+jCHgZY8rpsHzk+3e0d3p4KxL3UURUgjFrQFisSxaJA2PDCdyDtIHcXM5YWTWQfwdvmAQmiRm+Rfltl2uOIfyz5TVkqSPCXE7u3Af05IwnMerw8HRg0FgFUhefwixLYBUNIRJPszBjC5PpYu8L6QNaLZIrJxVYk6Ns6Yek2abgrSsxexGEq/evz94e1kJrVEsryugL2aHD/im2C/iPY8ttB3zWiP98+d1nsZNp2/LErrMmr4weTlOcovLngit6vQ0LFGLllM8rCoB1CTg6Kq+awAmMH1Dh buagir@buagir-arch"
+user_uid: 963
+user_gid: 963
+user_sudoers: "%{{ user_name }} ALL=(ALL) NOPASSWD: ALL"
+user_home: "/home/{{ user_name }}"

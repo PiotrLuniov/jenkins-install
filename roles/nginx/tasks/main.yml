@@ -1,0 +1,29 @@
+---
+# tasks file for nginx
+- name: Install NGINX
+  become: true
+  yum: name=nginx
+
+- name: Work with hosts file
+  become: true
+  shell:  |
+    echo "192.168.88.2  jenkins.domain.tld" >> /etc/hosts
+
+- name: Copy config NGINX
+  become: true
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Copy config for jenkins
+  become: true
+  copy:
+    src: default.conf
+    dest: /etc/nginx/conf.d/default.conf
+
+- name: Start NGINX
+  become: true
+  service:
+    name: nginx
+    state: started
+    enabled: yes

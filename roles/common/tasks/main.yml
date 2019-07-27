@@ -1,0 +1,9 @@
+---
+- name: Upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+- name: Install net-tools
+  yum:
+    name: net-tools.x86_64
+    state: present
