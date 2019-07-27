@@ -1,0 +1,11 @@
+- name: Create directory 'JAVA_HOME'
+  file:
+    path: "{{ JAVA_HOME }}"
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: Download OpenJDK
+  get_url:
+    url: "{{ openjdk_url }}"
+    dest: "/tmp/{{ java_tar }}"

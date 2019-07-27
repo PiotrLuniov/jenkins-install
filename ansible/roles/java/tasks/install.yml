@@ -1,0 +1,28 @@
+- name: Install java
+  block:
+  - name: Extract java archive
+    unarchive:
+      src: "/tmp/{{ java_tar }}"
+      dest: "{{ JAVA_HOME }}"
+      creates: "{{ JAVA_HOME }}/bin/java"
+      remote_src: yes
+      extra_opts:
+      - --directory
+      - "{{ JAVA_HOME }}"
+      - --strip
+      - "1"
+
+  - name: Alternatives java/javac/jar link is created/changed
+    alternatives:
+      name: "{{ item }}"
+      link: "/usr/bin/{{ item }}"
+      path: "{{ JAVA_HOME }}/bin/{{ item }}"
+    with_items:
+    - java
+    - javac
+    - jar
+    - javadoc
+  become: yes
+  rescue:
+  - fail:
+      msg: "java version distribution hasn't been found"

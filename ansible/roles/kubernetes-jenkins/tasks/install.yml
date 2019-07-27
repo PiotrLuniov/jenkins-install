@@ -1,0 +1,17 @@
+- name: Deploying Persistent Volume (Claim)
+  shell: |
+    kubectl apply -f "{{ item }}"
+  with_items:
+  - "{{ JENKINS_FOLDER }}/persistent_volume.yml"
+  - "{{ JENKINS_FOLDER }}/persistent_volume_claim.yml"
+
+- name: Deploying jenkins
+  shell: |
+    kubectl apply -f "{{ item }}"
+  with_items:
+  - "{{ JENKINS_FOLDER }}/deployment.yml"
+  - "{{ JENKINS_FOLDER }}/service.yml"
+
+- name: Create Ingress
+  shell: |
+    kubectl apply -f "{{ JENKINS_FOLDER }}/ingress.yml"

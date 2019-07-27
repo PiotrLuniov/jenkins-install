@@ -1,0 +1,16 @@
+- name: Install tools for docker
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+  become: yes
+
+- name: Add docker repository
+  get_url:
+    url: "{{ docker_yum_repo_url }}"
+    dest: "{{ docker_yum_repo }}"
+    mode: 0644
+  become: yes

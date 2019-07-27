@@ -1,0 +1,61 @@
+- name: Install epel-release
+  yum:
+    name: epel-release
+  become: yes
+
+- name: Install OS Requirements
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - deltarpm
+    - wget
+    - ntp
+    - jq
+    - net-tools
+    - bind-utils
+    - moreutils
+    - python-kubernetes
+    - python-openshift
+  become: yes
+
+- name: Start ntpd service
+  systemd:
+    name: ntpd
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  become: yes
+
+- name: Disable SWAP for Kubernetes
+  mount:
+    name: swap
+    fstype: swap
+    state: absent
+  become: yes
+  
+- name: Disable swap on runtime
+  command: swapoff -a
+  become: yes
+
+- name: Add kernel module 'br_netfilter' for bridge-nc-call-iptables
+  modprobe:
+    name: br_netfilter
+    state: present
+  become: yes
+
+- name: Set bridge-nc-call-iptables (IPv4 and IPv6)
+  sysctl:
+    name: "{{ item }}"
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+  become: yes
+  with_items:
+  - net.bridge.bridge-nf-call-iptables
+  - net.bridge.bridge-nf-call-ip6tables

@@ -1,0 +1,58 @@
+- name: Installing dependences
+  package:
+    name: fontconfig
+    state: present
+  become: yes
+
+- name: Add the user 'jenkins'
+  user:
+    name: "{{ jenkins_user }}"
+    shell: /bin/bash
+    home: "{{ JENKINS_HOME }}"
+  become: yes
+
+- name: Create folders to save jenkins information
+  file:
+    path: "{{ JENKINS_HOME }}/{{ item }}"
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: "{{ jenkins_user }}"
+  with_items:
+  - war
+  - log
+  - conf
+  - userContent
+  - fingerprints
+  - nodes
+  - plugins
+  - workspace
+  - jobs
+
+- name: Copy jenkins.service
+  copy:
+    src: jenkins.service
+    dest: /etc/systemd/system/jenkins.service
+  become: yes
+
+- name: Copy jenkins.init.d
+  copy:
+    src: jenkins.init.d
+    dest: /etc/rc.d/init.d/jenkins
+    mode: 0755
+  become: yes
+
+- name: Copy jenkins.sysconfig
+  copy:
+    src: jenkins.sysconfig
+    dest: "{{ JENKINS_HOME }}/conf/jenkins"
+  become: yes
+  become_user: "{{ jenkins_user }}"
+
+- name: Set 'JENKINS_HOME' in 'JENKINS_HOME/conf/jenkins'
+  replace:
+    path: "{{ JENKINS_HOME }}/conf/jenkins"
+    regexp: '(JENKINS_HOME=).*'
+    replace: '\1"{{ JENKINS_HOME }}"'
+  become: yes
+  become_user: "{{ jenkins_user }}"

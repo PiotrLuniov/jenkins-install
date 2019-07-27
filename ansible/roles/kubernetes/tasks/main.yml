@@ -1,0 +1,14 @@
+- name: Installing dependencies
+  include_tasks: pre-install.yml
+
+- name: Installing Kubernetes
+  include_tasks: install.yml
+
+- name: Configure Kubernetes
+  include_tasks: configuration.yml
+
+- name: Start Kubernetes
+  include_tasks: start.yml
+
+- name: Deploying Cluster
+  include_tasks: cluster.yml

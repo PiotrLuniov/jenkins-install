@@ -1,0 +1,5 @@
+- name: Create namespace
+  include_tasks: pre-install.yml
+
+- name: Deploying Jenkins
+  include_tasks: install.yml

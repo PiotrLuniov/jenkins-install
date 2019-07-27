@@ -1,0 +1,8 @@
+- name: Install NGINX
+  include_tasks: install.yml
+
+- name: Configure NGINX
+  include_tasks: configuration.yml
+
+- name: Start NGINX
+  include_tasks: start.yml

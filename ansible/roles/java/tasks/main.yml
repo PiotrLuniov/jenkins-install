@@ -1,0 +1,11 @@
+- name: Prepare for installation
+  include_tasks: pre-install.yml
+
+- name: Installing Java
+  include_tasks: install.yml
+
+- name: Checking java version
+  include_tasks: check.yml
+  tags:
+  - never
+  - testing

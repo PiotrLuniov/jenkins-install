@@ -1,0 +1,75 @@
+- name: Cluster Init
+  shell: kubeadm init --pod-network-cidr "{{ pod_network_cidr }}" --apiserver-advertise-address "{{ ansible_host }}" --token "{{ token }}" >> cluster_initialized.txt
+  args:
+    chdir: $HOME
+    creates: cluster_initialized.txt
+  become: yes
+
+- name: Create .kube directory
+  file:
+    path: $HOME/.kube
+    state: directory
+    mode: 0755
+
+- name: Save k8s config for kubectl
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /home/vagrant/.kube/config
+    remote_src: yes
+    owner: vagrant
+    group: vagrant
+  become: yes
+
+- name: Master as Node
+  shell: |
+    kubectl taint nodes --all node-role.kubernetes.io/master- >> one_node.txt
+  args:
+    chdir: $HOME
+    creates: one_node.txt
+
+- name: Deploying POD Network
+  shell: |
+    kubectl apply -f "https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml"
+
+- name: Patch POD Network for Vagrant
+  shell: |
+    kubectl patch daemonsets kube-flannel-ds-amd64 -n kube-system --patch '{"spec":{
+          "template":{
+            "spec":{
+              "containers":[
+                {
+                  "name": "kube-flannel",
+                  "args": [
+                    "--ip-masq",
+                    "--kube-subnet-mgr",
+                    "--iface=eth1"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }'
+
+- name: Deploying MetalLB
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.0/manifests/metallb.yaml >> metallb_setup.txt
+  args:
+    chdir: $HOME
+    creates: metallb_setup.txt
+
+- name: Copy Service file for MetalLB
+  copy:
+    src: metallb.yml
+    dest: $HOME/metallb.yml
+
+- name: Create a Service object from an inline definition
+  k8s:
+    state: present
+    src: $HOME/metallb.yml
+
+- name: Demploying Ingress Nginx Controller
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+

@@ -1,0 +1,8 @@
+- name: Prepare for installation
+  include_tasks: pre-install.yml
+
+- name: Installing jenkins
+  include_tasks: install.yml
+
+- name: Start jenkins
+  include_tasks: start.yml

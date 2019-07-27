@@ -1,0 +1,24 @@
+- name: Configuration NGINX (without IPv6 for sbeliakou/centos)
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  become: yes
+  notify: Reload NGINX
+
+- name: Create folder for nginx/jenkins logs
+  file:
+    path: /var/log/nginx/jenkins
+    state: directory
+    owner: nginx
+    group: nginx
+    mode: 0700
+  become: yes
+  become_user: nginx
+  notify: Reload NGINX
+
+- name: Configuration NGINX (proxy for jenkins)
+  copy:
+    src: jenkins.conf
+    dest: /etc/nginx/conf.d/jenkins.conf
+  become: yes
+  notify: Reload NGINX

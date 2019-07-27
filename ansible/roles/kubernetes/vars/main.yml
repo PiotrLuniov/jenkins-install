@@ -1,0 +1,2 @@
+token: abcdef.0123456789abcdef
+pod_network_cidr: "10.244.0.0/16"

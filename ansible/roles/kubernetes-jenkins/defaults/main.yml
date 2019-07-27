@@ -1,0 +1,2 @@
+namespace: jenkins
+JENKINS_FOLDER: /opt/jenkins

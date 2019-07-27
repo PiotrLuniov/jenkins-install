@@ -1,0 +1,6 @@
+- name: Start jenkins
+  systemd:
+    name: jenkins
+    state: started
+    enabled: yes
+  become: yes

@@ -1,0 +1,11 @@
+- name: Install Kubernetes
+  yum:
+    name: "{{ packages }}"
+    exclude: kubernetes
+  vars:
+    packages:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - kubernetes-cni
+  become: yes

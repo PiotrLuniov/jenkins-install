@@ -1,0 +1,6 @@
+- name: Fix ip addresses for Vagrant
+  replace:
+    path: /etc/sysconfig/kubelet
+    regexp: '(KUBELET_EXTRA_ARGS=).*'
+    replace: '\1--node-ip={{ ansible_host }}'
+  become: yes

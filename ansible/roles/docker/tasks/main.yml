@@ -1,0 +1,11 @@
+- name: Installing dependencies and add repo
+  include_tasks: pre-install.yml
+
+- name: Installing docker
+  include_tasks: install.yml
+
+- name: Configure docker
+  include_tasks: configuration.yml
+
+- name: Start docker
+  include_tasks: start.yml

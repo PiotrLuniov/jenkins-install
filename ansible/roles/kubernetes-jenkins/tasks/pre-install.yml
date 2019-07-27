@@ -1,0 +1,24 @@
+- name: Create namespace "{{ namespace }}"
+  shell: |
+    kubectl create namespace "{{ namespace }}"
+  ignore_errors: yes
+
+- name: Create "{{ JENKINS_FOLDER }}"
+  file:
+    path: "{{ JENKINS_FOLDER }}"
+    state: directory
+    mode: 0755
+    owner: vagrant
+    group: vagrant
+  become: yes
+
+- name: Copy '*.yml' files for deploying Jenkins
+  copy:
+    src: "{{ item }}"
+    dest: "{{ JENKINS_FOLDER }}"
+  with_items:
+  - persistent_volume.yml
+  - persistent_volume_claim.yml
+  - deployment.yml
+  - service.yml
+  - ingress.yml

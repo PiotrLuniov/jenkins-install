@@ -1,0 +1,14 @@
+- name: Check validate java version
+  block:
+  - name: Check java major version
+    shell: /usr/bin/java -version 2>&1 | grep version
+    register: version_result
+    changed_when: false
+    failed_when: version|string not in version_result.stdout
+
+  - name: Validate java version
+    debug:
+      msg: "Java version is correct"
+  rescue:
+  - debug:
+      msg: "Java version is NOT correct"
