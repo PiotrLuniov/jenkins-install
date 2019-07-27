@@ -1,0 +1,11 @@
+---
+# defaults file for jenkins
+jenkins_user: jenkins
+jenkins_user_id: 920
+jenkins_group: jenkins
+jenkins_group_id: 920
+jenkins_war_url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+jenkins_install_path: /usr/share/jenkins/
+jenkins_war_path: /usr/share/jenkins/jenkins.war
+jenkins_home_path: /opt/jenkins
+jenkins_service_path: /etc/systemd/system/jenkins.service

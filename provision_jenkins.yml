@@ -1,0 +1,6 @@
+- name: Install jenkins on server
+  hosts: all
+  roles:
+    - java
+    - jenkins
+    - nginx

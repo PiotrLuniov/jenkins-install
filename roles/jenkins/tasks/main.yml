@@ -1,0 +1,47 @@
+---
+# tasks file for jenkins
+- name: Create jenkins Group
+  group:
+    name: "{{ jenkins_group }}"
+    gid: "{{ jenkins_group_id }}"
+    state: present
+  become: yes
+
+- name: Create jenkins User
+  user:
+    name: "{{ jenkins_user }}"
+    uid: "{{ jenkins_user_id }}"
+    group: "{{ jenkins_group }}"
+  become: yes
+
+- name: Create jenkins Folders
+  file:
+    path: "{{ item }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    state: directory
+    mode: 0755
+  loop:
+    - "{{ jenkins_install_path }}"
+    - "{{ jenkins_home_path }}"
+  become: yes
+
+- name: Download jenkins.war
+  get_url:
+    url: "{{ jenkins_war_url }}"
+    dest: "{{ jenkins_war_path }}"
+  become: yes
+
+- name: Deploy jenkins Systemd File
+  template:
+    src: jenkins.service.j2
+    dest: "{{ jenkins_service_path }}"
+  notify: systemd daemon reload
+  become: yes
+
+- name: jenkins Service Running and Enabled
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+  become: yes
