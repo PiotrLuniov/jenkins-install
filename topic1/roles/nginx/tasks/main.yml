@@ -1,0 +1,33 @@
+- name: Copy service
+  become: yes
+  copy:
+    src: nginx.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install nginx
+  become: yes
+  package:
+    name: nginx
+    state: latest
+
+- name: Copy vhost IP
+  become: yes
+  template:
+    src: jenkins.conf.j2
+    dest: /etc/nginx/conf.d/jenkins.conf
+  notify: "restart web services"
+
+- name: Start nginx
+  become: yes
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: Create fact
+  become: yes
+  copy:
+    src: exec_nginx.fact
+    dest: /etc/ansible/facts.d/
+    mode: 0755
+

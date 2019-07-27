@@ -1,0 +1,12 @@
+- name: JENKINS
+  hosts: servers
+
+  roles:
+  - role: user
+    user_name: jenkins
+ #   sudoers: "Defaults:{{ user_name }} !requiretty\n{{ user_name }} ALL=(ALL) NOPASSWD: ALL\n"
+  - role: java
+  - role: jenkins
+  - role: nginx
+
+

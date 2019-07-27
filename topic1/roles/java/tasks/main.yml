@@ -1,0 +1,19 @@
+- name: Install java
+  become: yes
+  yum:
+    name:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
+    state: latest
+
+#- name: custom fact
+#  become: yes
+#  copy:
+#    src: exec_java.fact
+#    dest: /etc/ansible/facts.d/
+#    mode: 0755
+
+#- name: Java Version
+#  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'
+#  register: java_version
+

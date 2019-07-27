@@ -1,0 +1,112 @@
+- name: Create directory
+  become: yes
+  file:
+    path: /opt/jenkins/
+    state: directory
+    owner: jenkins
+    group: jenkins
+#    mode: '0755'
+
+- name: Wget jenkins war
+  become: yes
+  get_url:
+    url: "http://mirrors.jenkins.io/war-stable/latest/jenkins.war"
+    dest: /opt/jenkins
+    owner: jenkins
+    group: jenkins
+
+
+#- name: Copy jenkins war
+#  become: yes
+#  copy:
+#    src: jenkins.war
+#    dest: /opt/jenkins
+#    owner: jenkins
+#    group: jenkins
+
+
+- name: Copy service
+  become: yes
+  copy:
+    src: jenkins.service
+    dest: /usr/lib/systemd/system/jenkins.service
+
+
+- name: Start Service
+  become: yes
+  systemd:
+    name: jenkins.service
+    state: started
+    enabled: yes
+
+
+
+#- name: Run java jar
+#  shell: |
+#    java -Duser.home=/opt/jenkins \
+#    -Djenkins.install.runSetupWizard=false \
+#    -Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true \
+#    -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London \
+#    -Duser.timezone=Europe/London -Dhttps.protocols=TLSv1.2 \
+#    -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 \
+#    -Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode=true \
+#    -Dpermissive-script-security.enabled=true -XX:MaxMetaspaceSize=1g \
+#    -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC \
+#    -Xms1000m -Xmx3000m -Dcom.sun.management.jmxremote.ssl=false \
+#    -jar /opt/jenkins/jenkins.war
+
+
+#- name: Create directory
+#  become: yes
+#  file:
+#    path: /opt/jenkins/
+#    state: directory
+#    mode: '0666'
+#
+#- name: Extract tomcat
+#  become: yes
+#  unarchive:
+#    src: /tmp/apache-tomcat-{{ tomcat_released }}.tar.gz
+#    dest: /opt/tomcat/
+#    remote_src: yes
+#    creates: /opt/tomcat/apache-tomcat-{{ tomcat_released }}
+#    owner: "{{ tomcat_user }}"
+#    group: "{{ tomcat_group }}"
+#
+#- name: Create a symbolic link
+#  become: yes
+#  file:
+#    src: /opt/tomcat/apache-tomcat-{{ tomcat_released }}
+#    dest: /opt/tomcat/latest
+#    state: link
+#
+##- name: Change ownership
+##  become: yes
+##  file:
+##    path: /opt/tomcat/apache-tomcat-{{ tomcat_released }}
+##    state: directory
+##    recurse: yes
+##    owner: "{{ tomcat_user }}"
+##    group: "{{ tomcat_group }}"
+#
+#- name: Copy service
+#  become: yes
+#  template:
+#    src: tomcat.service.j2
+#    dest: /usr/lib/systemd/system/tomcat.service
+#
+#- name: Start service
+#  become: yes
+#  service:
+#    name: tomcat
+#    enabled: yes
+#    state: started
+#
+#- name: create custom fact
+#  become: yes
+#  copy:
+#    src: exec_tomcat.fact
+#    dest: /etc/ansible/facts.d/
+#    mode: '0755'
+
+

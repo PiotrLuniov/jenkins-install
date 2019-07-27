@@ -1,0 +1,7 @@
+[servers]
+jenkins ansible_host=192.168.219.151
+
+[servers:vars]
+ansible_connection=paramiko_ssh
+ansible_user=vagrant
+ansible_password=vagrant

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 1Gi
+
+# kubectl apply -f /vagrant/volumes/jenkins_pvc.yaml
+# persistentvolumeclaim/localvolume-pvc created

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+TOMCAT_VERSION=`/opt/tomcat/latest/bin/catalina.sh version | grep "Server version:" | cut -d/ -f2`
+
+cat <<EOF
+{
+    "tomcat_version": "$TOMCAT_VERSION"
+}
+EOF

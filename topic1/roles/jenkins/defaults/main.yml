@@ -1,0 +1,5 @@
+tomcat_user: tomcat
+tomcat_group: "{{ tomcat_user }}"
+tomcat_released: "{{ hostvars.appserver.tomcat_released }}"
+tom_url: http://ftp.byfly.by/pub/apache.org/tomcat/tomcat-9/v{{ tomcat_released }}/bin/apache-tomcat-{{ tomcat_released }}.tar.gz
+

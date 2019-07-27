@@ -1,0 +1,13 @@
+Vagrant.configure("2") do |config|
+
+    config.vm.define "jenkins" do |js|
+        js.vm.box = "sbeliakou/centos"
+        js.vm.hostname = "jenkins"
+        js.vm.provider "virtualbox" do |js1|
+            js1.name = "jenkins-VM-Machine"
+		  	js1.memory = "4096"
+        end
+        js.vm.network "private_network", ip: "192.168.219.151"
+        js.vm.provision "shell", inline: "echo -e 'Go to localhost and execute:\n yes | ansible-playbook playbook -i inventory'"
+  	end
+end

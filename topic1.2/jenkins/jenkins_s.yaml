@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-svc
+spec:
+  selector:
+    app: jenkins
+  type: ClusterIP
+  ports:
+  - name: jenkinssvcport
+    port: 8080
+    targetPort: 8080
+  - name: jenkinssvcport2
+    port: 50000
+    targetPort: 50000

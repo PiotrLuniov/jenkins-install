@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-d
+  labels:
+    app: jenkins-d
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      containers:
+      - name: jenkins
+        image: jenkins/jenkins:lts
+        ports:
+        - name: jenkinsport
+          containerPort: 8080
+        - name: jenkinsport2
+          containerPort: 50000
+        volumeMounts:
+        - name: jenkins-volume
+          mountPath: /var/jenkins_home # JENKINS_HOME
+      volumes:
+      - name: jenkins-volume
+        persistentVolumeClaim:
+          claimName: jenkins-pvc
