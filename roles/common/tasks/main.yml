@@ -1,0 +1,50 @@
+---
+- name: Esure Ansible Facts Dir exists
+  file: path=/etc/ansible/facts.d state=directory recurse=yes
+  become: yes
+  tags:
+    - validate
+
+- name: Install Epel-release repo
+  yum: name=epel-release
+  become: yes
+  tags:
+    - installiation
+    - installiation epel-release
+    - preinstall
+    - always
+
+- name: Install python-pip
+  yum: name=python-pip
+  become: yes
+  tags:
+    - installiation
+    - installiation python-pip
+    - preinstall
+    - always
+
+- name: Install net-tools
+  yum: name=net-tools
+  become: yes
+  tags:
+    - installiation
+    - installiation nettools
+    - preinstall
+    - always
+
+- name: Install unzip
+  yum: name=unzip
+  become: yes
+  tags:
+    - installiation
+    - installiation unzip
+    - preinstall
+    - always
+
+- name: Install Python Dependencies
+  pip: name=requests
+  become: yes
+  tags:
+    - installiation
+    - preinstall
+

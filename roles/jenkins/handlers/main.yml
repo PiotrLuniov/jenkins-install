@@ -1,0 +1,30 @@
+---
+- name: systemd daemon reload
+  systemd: daemon_reload=yes
+  become: yes
+
+- name: restart jenkins
+  systemd: state=started name=jenkins
+  become: yes
+
+- name: save jenkins details
+  copy: 
+    content: >
+      {
+        "release": "{{ jenkins_release }}",
+        "user": {
+          "name": "{{ jenkins_user }}",
+          "id": "{{ jenkins_user_id }}"
+        },
+        "group": {
+          "name": "{{ jenkins_group }}",
+          "id": "{{ jenkins_group_id }}"
+        },
+        "jenkins_home": "{{ jenkins_home }}",
+        "catalina_home": "{{ jenkins_home }}/apache-jenkins-{{ jenkins_release }}",
+        "catalina_home_link": "{{ jenkins_home }}/current",
+        "jenkins_download_url": "{{ jenkins_url }}",
+        "installed": "{{ ansible_date_time.iso8601 }}"
+      }
+    dest: /etc/ansible/facts.d/jenkins.fact
+  become: yes

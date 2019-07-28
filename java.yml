@@ -1,0 +1,8 @@
+---
+- name: java install
+  hosts: all
+  roles:
+    - javaOpen
+
+  tags:
+    - always

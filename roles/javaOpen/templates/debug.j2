@@ -1,0 +1,5 @@
+public_ip={{ hostvars[inventory_hostname]['ipify_public_ip'] }}
+        public_ip_in_quotes="{{ hostvars[inventory_hostname]['ipify_public_ip'] }}"
+
+        default_ipv4={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}
+        default_ipv4_in_quotes="{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"

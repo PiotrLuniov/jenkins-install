@@ -1,0 +1,103 @@
+---
+- name: Add jenkins Group
+  group:
+    name: "{{ jenkins_group }}"
+    gid: "{{ jenkins_group_id }}"
+    state: present
+  become: yes
+
+- name: Add jenkins User
+  user:
+    name: "{{ jenkins_user }}"
+    comment: "jenkins Web Application Server"
+    uid: "{{ jenkins_user_id }}"
+    group: "{{ jenkins_group }}"
+  become: yes
+  
+- name: Create jenkins Home Folder
+  file:
+    path: "{{ jenkins_home }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    state: directory
+    mode: 0755
+  become: yes
+
+#- name: Unarchive jenkins from remote source
+#  unarchive:
+#    src: "{{ jenkins_url }}"
+#    dest: "{{ jenkins_home }}"
+#    owner: "{{ jenkins_user }}"
+#    group: "{{ jenkins_group }}"
+#    remote_src: yes
+#  notify:
+#    - save jenkins details
+#  become: yes
+#
+# Because of Archive structure, all files are extracted into {{jenkins_home}}/apache-jenkins-x.x.xx
+- name: deploy jenkins app war
+  uri:
+    url: "{{ jenkins_url }}"
+    method: POST
+    dest: "{{ jenkins_home }}/"
+  become: yes
+
+- name: Deploy Systemd File
+  template:
+    src: jenkins.service.j2
+    dest: /etc/systemd/system/jenkins.service
+  notify:
+    - systemd daemon reload
+  become: yes
+
+#- name: Enable jenkins Users
+#  template:
+#    src: jenkins-users.xml.j2
+#    dest: "{{ jenkins_home }}/current/conf/jenkins-users.xml"
+#    owner: "{{ jenkins_user }}"
+#    group: "{{ jenkins_group }}"
+#  notify:
+#    - restart jenkins
+#  when: jenkins_admin_enabled
+#  become: yes
+
+#- name: Enable jenkins Access
+#  template:
+#    src: context.xml.j2
+#    dest: "{{ jenkins_home }}/current/webapps/manager/META-INF/context.xml"
+#    owner: "{{ jenkins_user }}"
+#    group: "{{ jenkins_group }}"
+#  notify:
+#    - restart jenkins
+#  when: jenkins_admin_enabled
+#  become: yes
+
+#- name: Chmod jenkins Catalina
+#  shell: "chmod 743 {{ jenkins_home }}/current/bin/startup.sh {{ jenkins_home }}/current/bin/catalina.sh"
+#  become: yes
+
+- name: Ensure jenkins Service Running and Enabled
+  service: name=jenkins state=started enabled=yes
+  become: yes
+
+
+- name: Check if jenkins Process Running
+  shell: ps -eo cmd | grep -v grep | grep "jenkins"
+  args:
+    warn: false
+  tags:
+    - sanity
+
+#- name: Check if jenkins Responds 200
+#  shell: curl -sL -w "%{http_code}" localhost:8080 -o /dev/null | grep 200
+#  args:
+#    warn: false
+#  tags:
+#    - sanity
+
+#- name: Check if It's really jenkins
+#  shell: curl -s localhost:8080 | grep '<title>Ajenkins' >/dev/null
+#  args:
+#    warn: false
+#  tags:
+#    - sanity

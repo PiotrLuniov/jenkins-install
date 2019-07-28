@@ -1,0 +1,8 @@
+---
+- name: Sanity tests
+  hosts: all
+  roles:
+    - sanity
+
+  tags:
+    - always

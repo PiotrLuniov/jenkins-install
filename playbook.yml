@@ -1,0 +1,9 @@
+---
+- import_playbook: common.yml
+- import_playbook: nginx.yml
+- import_playbook: java.yml
+- import_playbook: jenkins.yml
+- import_playbook: sanity.yml
+
+
+

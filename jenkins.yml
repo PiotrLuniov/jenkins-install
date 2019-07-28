@@ -1,0 +1,8 @@
+---
+- name: Jenkins Install and user create
+  hosts: all
+  roles:
+
+    - jenkins
+  tags:
+    - always

@@ -1,0 +1,7 @@
+---
+- name: Base app install
+  hosts: all
+  roles:
+    - common
+  tags:
+    - base

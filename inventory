@@ -1,0 +1,29 @@
+[localhost]
+127.0.0.1
+
+[localhost:vars]
+server_url = 192.168.200.200
+
+
+[nodes:children]
+webserver
+
+
+[nodes:vars]
+ansible_connection=paramiko
+
+
+[webserver]
+192.168.200.200
+
+[webserver:vars]
+server_url = localhost
+ansible_user=vagrant
+ansible_ssh_private_key_file = .vagrant/machines/webserver/virtualbox/private_key
+
+
+
+
+[all:vars]
+some_var=some_value
+http_code=200

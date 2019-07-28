@@ -1,0 +1,9 @@
+---
+- name: Check port 80 and fail otherwise
+  wait_for:
+    port: 80
+    connect_timeout: 1
+    timeout: 5
+  tags:
+    - sanity
+# tasks file for sanity

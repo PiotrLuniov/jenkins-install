@@ -1,0 +1,10 @@
+---
+jenkins_user: jenkins
+jenkins_group: jenkins
+jenkins_user_id: 950
+jenkins_group_id: 950
+jenkins_home: /opt/jenkins
+jenkins_url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+jenkins_admin_enabled: false
+jenkins_admin: admin
+jenkins_admin_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
