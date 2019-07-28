@@ -1,0 +1,15 @@
+---
+# This playbook deploys the whole application stack.
+
+- name: Add user to all nodes and setup common
+  hosts: appservers
+  remote_user: devops
+  gather_facts: yes
+
+  roles:
+#    - common
+#    - devops_user
+    - nginx
+    - nginx2jenkins
+    - { role: jenkins }
+#    - java
