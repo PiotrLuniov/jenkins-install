@@ -1,0 +1,10 @@
+- name: Systemd daemon reload
+  systemd: 
+    daemon_reload: yes
+  become: yes
+
+- name: Restart jenkins
+  systemd: 
+    state: started 
+    name: jenkins
+  become: yes

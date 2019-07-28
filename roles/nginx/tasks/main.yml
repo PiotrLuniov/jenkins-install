@@ -1,0 +1,24 @@
+- name: Add Nginx Repository
+  yum_repository:
+    name: Nginx
+    description: Nginx Centos Repo
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck: no
+    enabled: yes
+  become: yes
+
+- name: Ensure Nginx Installed
+  yum: 
+    name: nginx
+  notify:
+    - Restart Nginx
+  become: yes
+
+- name: Adding conf file
+  copy:
+    src: default.conf
+    dest: /etc/nginx/conf.d/default.conf
+  notify:
+    - Systemd daemon reload
+    - Restart Nginx
+  become: yes

@@ -1,0 +1,22 @@
+# - hosts: all
+#   tasks:
+#   - debug:
+#       msg: "{{ hostvars[webserver]['ansible_facts']['ansible_eth1']['ipv4']['address'] }}  jenkins"
+
+# - hosts: localhost
+#   tasks:
+#     # check existing notice
+#   # - debug:
+#   #     msg: "{{ hostvars[webserver]['ansible_facts']['ansible_eth1']['ipv4']['address'] }}  jenkins"
+#   - name: Editing /etc/hosts
+#     lineinfile:
+#       path: /etc/hosts
+#       line: "192.168.77.31  jenkins"
+#     become: yes
+
+- hosts: webservers
+  
+  roles:
+    - common
+    - jenkins
+    - nginx
