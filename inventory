@@ -1,0 +1,7 @@
+[jenkins]
+main ansible_host=192.168.121.111
+
+[all:vars]
+ansible_user=vagrant
+
+

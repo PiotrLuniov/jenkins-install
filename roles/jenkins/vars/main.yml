@@ -1,0 +1,7 @@
+jenkins_user: jenkins
+
+jenkins_group: jenkins
+
+path_to_jenkins: /opt/jenkins
+
+url_jenkins: "http://mirrors.jenkins.io/war-stable/latest/jenkins.war"

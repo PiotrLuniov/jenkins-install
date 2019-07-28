@@ -1,0 +1,7 @@
+- name: instaletion jenkins
+  hosts: jenkins
+  roles:
+  - role: java
+  - role: jenkins
+  - role: httpd
+

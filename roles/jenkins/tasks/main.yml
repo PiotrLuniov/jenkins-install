@@ -1,0 +1,40 @@
+- yum:
+    name: 
+    - fontconfig
+    - dejavu-sans-fonts
+    state: present
+  become: yes
+   
+- name: Create group
+  group:
+    name: "{{ jenkins_group }}"
+    gid: 505
+  become: yes
+
+- user:
+   name: "{{ jenkins_user }}"
+   group: "{{ jenkins_group }}"
+   uid: 505
+  become: yes
+
+- name: create jenkins dyrectory
+  file: 
+   state: directory
+   path: /opt/jenkins
+  become: yes
+
+- name: Download jenkins.war
+  get_url:
+    url: "{{ url_jenkins }}"
+    dest: "{{ path_to_jenkins }}/jenkins.war"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+  become: yes
+
+- name: create jenkins.service
+  template:
+    src: jenkins.service.j2
+    dest: /usr/lib/systemd/system/jenkins.service
+  become: yes
+  notify: start_jenkins
+

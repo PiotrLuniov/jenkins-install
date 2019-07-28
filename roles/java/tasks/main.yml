@@ -1,0 +1,44 @@
+- name: java-version?
+  shell: java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g'
+  register: javaV
+  ignore_errors: True
+
+- name: when java failed
+  debug: msg="java is not installed"
+  when: javaV.stdout != "{{ java_version }}"
+
+
+- block: 
+  - name: create java dyrectory
+    file: 
+     state: directory
+     path: /opt/oracle/java/
+    become: yes
+
+  - name: download and unzip java
+    unarchive: 
+     creates: /opt/oracle/java/jdk-"{{ java_version }}"
+     src: "{{ path_to_java }}"
+     dest: /opt/oracle/java/
+    become: yes
+    register: download_fail
+
+  - name: register in alternatives
+    alternatives:
+     name: "{{ item }}"
+     link: /bin/{{ item }}
+     path: /opt/oracle/java/jdk-{{ java_version }}/bin/{{ item }}
+    become: yes
+    with_items:
+      - java
+      - javac
+      - jar
+ 
+  rescue:
+  - name: when java failed
+    debug: msg="java version distribution hasn’t been found"
+    when: download_fail is failed
+
+  - debug: msg="somthing is wrong with java instaletion"
+
+  when: javaV.stdout != "{{ java_version }}"

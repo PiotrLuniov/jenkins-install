@@ -1,0 +1,2 @@
+java_version: 11.0.4
+path_to_java: jdk-{{ java_version }}_linux-x64_bin.tar.gz
