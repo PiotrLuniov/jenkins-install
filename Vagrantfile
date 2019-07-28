@@ -10,6 +10,7 @@ Vagrant.configure("2") do |config|
    webserver.vm.provision "ansible" do |ansible|
        ansible.playbook = "playbook.yml"
        ansible.inventory_path = "inventory"
+       ansible.limit = "all"
        ansible.verbose = "v"
      end
 
