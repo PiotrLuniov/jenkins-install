@@ -8,18 +8,21 @@
     path: /etc/rc.d/init.d/jenkins
   register: jenhome
 
-
+# V1
+# install path /opt/jenkins 
 #- name: Check if rules file exists
 #  stat: 
 #    path: /opt/jenkins/.jenkins
 #  register: jenhome
 
+# V2
+# install with YUM 
 - name: preInstalling Jenkins v2
   shell: |
     sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
     sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
   when: jenhome.stat.exists == False
-
+# install with YUM
 - name: Installing Jenkins v2
   package:
     name:
@@ -27,6 +30,8 @@
     state: present
   when: jenhome.stat.exists == False
 
+# V1
+# install path /opt/jenkins 
 #- name: Installing Jenkins
 #  shell: |
 #    nohup java -Duser.home={{ jenkins_home }} \
