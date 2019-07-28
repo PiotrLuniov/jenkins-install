@@ -1,0 +1,9 @@
+#!/bin/bash
+
+JAVA_VERSION=$(java -version 2>&1 | grep version | awk '{print $3}' | sed 's/[^0-9._]//g')
+
+cat <<EOF
+{
+    "java_version": "$JAVA_VERSION"
+}
+EOF

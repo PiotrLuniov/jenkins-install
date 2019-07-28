@@ -1,0 +1,14 @@
+---
+# handlers file for jenkins
+- name: Systemd Daemon reload
+  systemd: 
+    daemon_reload: yes
+  become: yes
+  listen: systemd daemon reload
+
+- name: Restarting Jenkins
+  systemd: 
+    state: restart 
+    name: jenkins
+  become: yes
+  listen: restarting jenkins

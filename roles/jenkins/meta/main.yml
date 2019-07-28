@@ -1,0 +1,17 @@
+dependencies:
+  - role: prerequest
+    vars:
+      user_name: "{{ jenkins_user }}"
+      user_home: "{{ jenkins_home_folder }}"
+      user_id: 1500
+      create_user: True
+    install_packages: [git]
+  - role: java
+    vars:
+      jdk_release: "1.8.0"
+  - role: nginx-jenkins
+    vars:
+      nginx_hostname: "{{ jenkins_hostname }}"
+      to_address: "{{ jenkins_listen_address }}"
+
+  

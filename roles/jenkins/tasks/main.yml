@@ -1,0 +1,45 @@
+---
+# tasks file for jenkins
+- name: Create Jenkins Home Folder
+  file:
+    path: "{{ jenkins_home_folder }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    state: directory
+    mode: 0755
+  become: yes
+
+- name: "Download Jenkins WAR"
+  get_url:
+    url: "{{ jenkins_url }}"
+    dest: "{{ jenkins_home_folder }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+    remote_src: yes
+  become: yes
+
+- name: Deploy Systemd for Jenkins
+  template:
+    src: jenkins.service.j2
+    dest: /usr/lib/systemd/system/jenkins.service
+  notify:
+    - systemd daemon reload
+    - restarting jenkins
+  become: yes
+
+- name: Copy Config File for jenkins
+  template:
+    src: jenkins.conf.j2
+    dest: "{{ jenkins_home_folder }}/jenkins.conf"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+  notify:
+    - restarting jenkins
+  become: yes
+
+- name: Enable service
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+  become: yes

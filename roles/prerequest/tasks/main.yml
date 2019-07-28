@@ -1,0 +1,41 @@
+---
+# tasks file for prerequest
+- name: Installing Required Packages from Repo
+  yum:
+    name: "{{ install_packages }}"
+    state: installed
+  become: yes
+  when: install_packages is defined
+
+- name: Create directory for Ansible facts
+  file: 
+    path: /etc/ansible/facts.d 
+    state: directory 
+    recurse: yes
+  become: yes
+
+- name: Add {{user_name}} Group
+  group:
+    name: "{{ user_group }}"
+    gid: "{{ user_id }}"
+    state: present
+  become: yes
+  when: create_user
+
+- name: Add {{ user_name }}
+  user:
+    name: "{{ user_name }}"
+    uid: "{{ user_group_id }}"
+    group: "{{ user_group }}"
+  become: yes
+  when: create_user
+
+- name: Create {{ user_name }} Home Folder
+  file:
+    path: "{{ user_home }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_group }}"
+    state: directory
+    mode: 0755
+  when: user_home is defined and create_user
+  become: yes

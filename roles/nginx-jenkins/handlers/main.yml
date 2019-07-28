@@ -1,0 +1,14 @@
+---
+# handlers file for nginx-jenkins
+- name: Systemd daemon-reload
+  systemd: 
+    daemon_reload: yes
+  become: yes
+  listen: restarting nginx
+
+- name: Restarting Nginx
+  systemd: 
+    state: started 
+    name: nginx
+  become: yes
+  listen: restarting nginx

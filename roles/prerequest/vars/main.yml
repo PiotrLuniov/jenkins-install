@@ -1,0 +1,4 @@
+---
+# vars file for prerequest
+jenkins_pid_file: /var/run/jenkins.pid
+jenkins_lock_file: /var/lock/subsys/jenkins

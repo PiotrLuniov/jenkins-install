@@ -1,0 +1,13 @@
+---
+# tasks file for java
+- name: Installing java
+  yum:
+    name: java-{{ jdk_release }}-openjdk
+  become: yes
+
+- name: Specify java version into ansible fact
+  copy:
+    src: java.fact
+    dest: /etc/ansible/facts.d
+    mode: a+x
+  become: yes

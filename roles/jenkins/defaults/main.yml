@@ -1,0 +1,7 @@
+---
+# defaults file for jenkins
+jenkins_home_folder: "/opt/jenkins"
+jenkins_user: jenkins
+jenkins_group: "{{ jenkins_user }}"
+jenkins_hostname: "jenkins"
+jenkins_listen_address: "127.0.0.1"

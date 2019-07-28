@@ -1,0 +1,43 @@
+---
+# tasks file for nginx-jenkins
+
+      # nginx_hostname: "{{ jenkins_hostname }}"
+      # to_address: "{{ jenkins_listen_address }}"
+
+- name: Create some folders
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+  become: yes
+
+- name: Copy default Config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    force: yes
+    validate: nginx -t -c %s
+  become: yes
+  notify: restarting nginx
+
+- name: Generate self signed SSL certificates
+  command: >
+    openssl req
+      -new
+      -newkey rsa:4096
+      -days 365
+      -nodes
+      -x509
+      -subj "/C=US/ST=NY/L=NY/O=NA/CN=localhost"
+      -keyout /etc/nginx/ssl/{{ nginx_hostname }}.key
+      -out /etc/nginx/ssl/{{ nginx_hostname }}.pem
+  become: yes
+
+- name: Copy Nginx Config for Jenkins
+  template:
+    src: jenkins.conf.j2
+    dest: /etc/nginx/conf.d/jenkins.conf
+    owner: root
+    group: root
+    mode: 0755
+  notify: restarting nginx
+  become: yes
