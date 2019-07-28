@@ -1,0 +1,5 @@
+---
+# vars file for java
+
+java_home: /opt/oracle/java/{{java_version}}
+java_fact: "{{ hostvars[groups['appservers'][0]].ansible_local.java.version | default('') }}"

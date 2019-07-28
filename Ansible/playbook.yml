@@ -1,0 +1,12 @@
+- name: Apavarnitsyn playbook
+  hosts: all
+  strategy: debug
+
+
+  roles:
+
+  - role: jenkins 
+  - role: nginx
+  - role: nginx_redirect
+    redirect_name: "jenkins"
+  

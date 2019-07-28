@@ -1,0 +1,9 @@
+---
+# defaults file for nginx_redirect
+
+location: "/"
+redirect_url: "127.0.0.1"
+redirect_port: "8080"
+redirect_name: "redirect"
+redirect_path: ""
+

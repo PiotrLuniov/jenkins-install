@@ -1,0 +1,47 @@
+---
+# tasks file for user
+- name: Create groups {{user_group}}
+  group:
+    name: "{{user_group}}"
+    state: present
+    gid: "{{group_id | default(omit)}}"
+  become: yes
+
+
+- name: Create user {{user_name}}
+  user:
+    name: "{{user_name}}"
+    group: "{{user_group}}"
+    groups: "{{user_group_list | default(omit)}}"
+    append: yes
+    uid: "{{user_id | default(omit)}}"
+    create_home: "{{user_create_home | default(omit)}}"
+    home: "{{user_home | default(omit)}}"
+  become: yes
+
+
+- name: Set authorized key taken from file
+  authorized_key:
+    user: "{{user_name}}"
+    state: present
+    key: "{{ lookup('file', '{{item}}') }}"
+  loop: "{{user_auth_key}}"
+  when: user_auth_key is defined
+  become: yes
+
+
+- name: Add user to the sudoers
+  copy:
+    dest: "/etc/sudoers.d/{{user_name}}"
+    content: "{{user_priv}}"
+    backup: yes
+    validate: /usr/sbin/visudo -cf %s
+  when: user_auth_key is defined
+  become: yes
+
+
+
+
+
+
+

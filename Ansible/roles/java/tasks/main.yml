@@ -1,0 +1,46 @@
+---
+# tasks file for java
+- name: Starting Java role
+  file:
+    path: "{{java_home}}"
+    recurse: yes
+    state: directory
+  become: yes
+
+- name: Block java install  
+  block:
+  - name: Install java from package  
+    unarchive:
+      src: "{{java_src | default ('')}}jdk-{{java_version}}_linux-x64_bin.tar.gz"
+      dest: "{{java_home}}"
+      creates: "{{java_home}}/bin"
+      extra_opts:
+      - --strip-components=1
+    become: yes
+    register: java_output
+
+  rescue:
+  - fail: msg="java archive hasn’t been found"
+
+- name: Select java version
+  alternatives:
+    name: "{{item}}"
+    path: "{{java_home}}/bin/{{item}}"
+    link: "/usr/bin/{{item}}"
+  loop: 
+  - java
+  - javac
+  - jar
+  become: yes
+
+
+
+
+
+
+
+
+
+
+
+  

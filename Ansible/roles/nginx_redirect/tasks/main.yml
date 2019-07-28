@@ -1,0 +1,23 @@
+---
+# tasks file for nginx_jenkins
+
+- name: creating subfolder for redirect
+  file:
+    path: "/etc/nginx/conf.d"
+    recurse: yes
+    state: directory
+  become: yes
+
+- name: overwrite main config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  become: yes
+
+
+- name: Copy Vhost {{redirect_name}}.conf to nginx
+  become: yes
+  template: 
+    src: template/redirect.conf.j2
+    dest: /etc/nginx/default.d/{{redirect_name}}.conf
+  notify: restart nginx

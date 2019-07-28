@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+
+spec:
+  rules:
+  - host: jenkins
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: jenkins-svc
+          servicePort: 8080
+
+

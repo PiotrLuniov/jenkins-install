@@ -1,0 +1,15 @@
+[Unit]
+Description=Jenkins
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+EnvironmentFile={{ jenkins_path }}config
+ExecStart=/usr/bin/java ${JENKINS_JAVA_OPTIONS} -jar {{ jenkins_path }}jenkins.war --httpPort=${JENKINS_PORT} --httpListenAddress=${JENKINS_LISTEN_ADDRESS} ${JENKINS_ARGS}
+Restart=always
+User=jenkins
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target

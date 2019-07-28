@@ -1,0 +1,8 @@
+dependencies:
+  - role: java
+    java_version: "{{jenkins_java_version}}"
+
+  - role: user
+    user_name: jenkins
+    user_home: "{{jenkins_path}}"
+  
