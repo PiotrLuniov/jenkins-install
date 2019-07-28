@@ -16,7 +16,7 @@
     become_user: jenkins
   - name: Start jenkins
     shell: |
-      nohup /bin/java "{{java_vars_shell}}" -jar {{jenkins_home}}jenkins.war  &
+      nohup /bin/java {{java_vars_shell}} -jar {{jenkins_home}}jenkins.war  &
     become_user: jenkins
   become: yes
 - block:
