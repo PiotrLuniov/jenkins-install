@@ -1,0 +1,24 @@
+- hosts: ciservers
+  roles:
+  - role: jenkins
+    vars:
+      java_version: 1.8.0
+      user_name: jenkins
+      operations:
+        - download
+        - install
+        - user
+        - service
+    tags:
+    - always
+    - jenkins
+
+  - role: nginx
+    vars:
+      operations:
+        - install
+        - proxy
+        - service
+    tags:
+    - always
+    - nginx

@@ -1,0 +1,11 @@
+- import_tasks: download.yml
+  when: '"download" in operations'
+
+- import_tasks: install.yml
+  when: '"install" in operations'
+
+- import_tasks: user.yml
+  when: '"user" in operations'
+
+- import_tasks: serviceInstallV2.yml
+  when: '"service" in operations'

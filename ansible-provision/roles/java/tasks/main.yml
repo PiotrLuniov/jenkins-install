@@ -1,0 +1,8 @@
+- name: Install Java
+  yum:
+    name: java-{{ java_version | default(1.8.0) }}-openjdk
+
+- name: Java Home Settings 
+  shell: echo $JAVA_HOME
+  environment:
+    JAVA_HOME: "{{ java_h }}"

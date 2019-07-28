@@ -1,0 +1,8 @@
+- name: Add Jenkins user
+  shell: |
+    sudo groupadd {{ user_name }}
+    sudo useradd -g {{ user_name }} -d {{ jenkins_home }} -s /bin/nologin {{ user_name }}
+
+    sudo chown -R {{ user_name }}:{{ user_name }} {{ jenkins_home }}
+
+  when: jenhome.stat.exists == False

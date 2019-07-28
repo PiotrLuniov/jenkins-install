@@ -1,0 +1,8 @@
+- import_tasks: install.yml
+  when: '"install" in operations'
+
+- import_tasks: proxy.yml
+  when: '"proxy" in operations'
+
+- import_tasks: service.yml
+  when: '"service" in operations'

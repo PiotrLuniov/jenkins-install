@@ -1,0 +1,2 @@
+[ciservers]
+jenkins ansible_host=172.64.16.31

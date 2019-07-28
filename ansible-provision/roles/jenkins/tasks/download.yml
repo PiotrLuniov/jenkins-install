@@ -1,0 +1,4 @@
+- name: Download Jenkins RPM package
+  get_url:
+    url: "{{ URL }}"
+    dest: "/tmp/jenkins.war"

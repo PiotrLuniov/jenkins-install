@@ -1,0 +1,15 @@
+- name: Add Epel-Release Repo
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install NGINX Manually
+  yum:
+    name: nginx
+    state: present
+
+- name: Configurate NGINX To Work With IPv4
+  template:
+    src: files/nginx.conf
+    dest: "{{ nginx_home }}/nginx.conf"
+    backup: yes

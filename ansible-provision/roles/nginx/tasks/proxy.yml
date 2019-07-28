@@ -1,0 +1,4 @@
+- name: Set Proxy Path
+  copy:
+    src: files/jenkins.conf
+    dest: "{{ nginx_home }}/conf.d/jenkins.conf"

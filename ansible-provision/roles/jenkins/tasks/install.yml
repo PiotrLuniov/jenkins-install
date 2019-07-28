@@ -1,0 +1,41 @@
+- name: Сreate Jenkins home directory
+  file:
+    path: "{{ jenkins_home }}"
+    state: directory
+
+- name: Check if rules file exists
+  stat: 
+    path: /etc/rc.d/init.d/jenkins
+  register: jenhome
+
+
+#- name: Check if rules file exists
+#  stat: 
+#    path: /opt/jenkins/.jenkins
+#  register: jenhome
+
+- name: preInstalling Jenkins v2
+  shell: |
+    sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+  when: jenhome.stat.exists == False
+
+- name: Installing Jenkins v2
+  package:
+    name:
+      - jenkins
+    state: present
+  when: jenhome.stat.exists == False
+
+#- name: Installing Jenkins
+#  shell: |
+#    nohup java -Duser.home={{ jenkins_home }} \
+#    -Djenkins.install.runSetupWizard=false \
+#    -Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true \
+#    -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London \
+#    -Duser.timezone=Europe/London -Dhttps.protocols=TLSv1.2 \
+#    -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 \
+#    -Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode=true \
+#    -Dpermissive-script-security.enabled=true -XX:MaxMetaspaceSize=1g \
+#    -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -Xms1000m -Xmx3000m -Dcom.sun.management.jmxremote.ssl=false -jar /tmp/jenkins.war &
+#  when: jenhome.stat.exists == False
