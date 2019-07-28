@@ -1,0 +1,15 @@
+---
+# defaults file for user 
+group_name: "{{ user_name }}"
+group_guid: "{{ users_uid[user_name] }}"
+groups_list: ""
+
+user_priv: ""
+user_home: "{{ '/home/' + user_name }}"
+
+list_keys: ""
+
+create_home: yes
+
+add_key: no
+add_sudoers: no

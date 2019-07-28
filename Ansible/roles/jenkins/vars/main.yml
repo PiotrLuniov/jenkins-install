@@ -1,0 +1,4 @@
+---
+# vars file for jenkins
+java_vars_shell: |-
+  {% for key, value in java_vars.items() %}{% if  value|string != 'None' %} -{{key}}={{value}}{% else %} -{{key}}{% endif %}{% endfor %}

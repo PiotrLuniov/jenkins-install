@@ -1,0 +1,24 @@
+---
+# defaults file for jenkins
+jenkins_home: /opt/jenkins/
+java_vars: 
+  Duser.home: "{{ jenkins_home }}"
+  Xms1000m:
+  Xmx3000m: 
+  Djenkins.install.runSetupWizard: false
+  Djava.awt.headless: true 
+  Dhudson.plugins.git.GitSCM.verbose: true 
+  Dorg.apache.commons.jelly.tags.fmt.timeZone: Europe/Minsk 
+  Duser.timezone=Europe/London -Dhttps.protocols: TLSv1.2 
+  Dorg.eclipse.jetty.server.Request.maxFormContentSize: 5000000 
+  Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode: true 
+  Dpermissive-script-security.enabled: true 
+  XX:MaxMetaspaceSize: 1g 
+  XX:+CMSClassUnloadingEnabled:
+  XX:+UseConcMarkSweepGC:
+  XX:+DisableExplicitGC:
+  Dcom.sun.management.jmxremote.ssl: false
+port: 8080
+configure_proxy_nginx: no
+without_ipv6: no
+jenkins_server: localhost 

@@ -1,0 +1,8 @@
+[jenkins]
+192.168.68.92
+
+
+[all:vars]
+ansible_user=vagrant
+
+

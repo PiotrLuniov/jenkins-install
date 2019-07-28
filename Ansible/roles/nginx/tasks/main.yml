@@ -1,0 +1,25 @@
+---
+# tasks file for nginx
+- block:
+  - name: install nginx
+    become: yes
+    yum:
+      name: nginx
+      state: installed
+
+  - name: Comment IPv6 listen
+    lineinfile:
+      path: /etc/nginx/nginx.conf
+      regexp: '^        listen       \[::\]:80 default_server;'
+      line: "#        listen       [::]:80 default_server;"
+    notify:
+      - restart nginx
+
+  - name: start nginx
+    become: yes
+    service:
+      name: nginx
+      state: started
+
+
+  become: yes

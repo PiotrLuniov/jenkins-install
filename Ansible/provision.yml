@@ -1,0 +1,16 @@
+- hosts: all
+  pre_tasks:
+    - setup:
+    
+  roles:
+    - role: nginx
+      without_ipv6: yes 
+
+    - role: jenkins
+      configure_proxy_nginx: yes
+
+
+
+
+
+

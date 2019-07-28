@@ -1,0 +1,3 @@
+---
+# defaults file for nginx
+without_ipv6: no
