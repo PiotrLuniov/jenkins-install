@@ -1,0 +1,7 @@
+- hosts: jmain
+  gather_facts: yes
+  connection: "ssh"
+  roles:
+  - role: jenkins-installation
+    vars:
+      remote_user: jenkins

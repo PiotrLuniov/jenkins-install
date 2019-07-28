@@ -1,0 +1,7 @@
+
+- import_playbook: user_import.yml
+- import_playbook: java1_import.yml
+- import_playbook: jenkins-installation.yml
+- import_playbook: nginx.yml
+
+

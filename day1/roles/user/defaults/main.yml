@@ -1,0 +1,17 @@
+---
+# defaults file for user
+user_name: jenkins
+user_group: "{{ user_name }}"
+# secondary_groups:
+#     - mail
+#     - nobody
+# user_groupid: 1500
+# user_id: 1001
+user_home: /home/{{ user_name }}
+cr_home: yes
+ssh_key_list:
+- devops.pem
+# - devops1.pem
+
+sudoers_dest_path: /etc/sudoers.d
+file_name: jenkins

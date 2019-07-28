@@ -1,0 +1,6 @@
+---
+# defaults file for jenkins-installation
+
+jenkins_archive_url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+jenkins_archive_dest: /tmp/jenkins.war
+deploying_path: /opt/jenkins

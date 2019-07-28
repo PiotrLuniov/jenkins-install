@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |conf|
+conf.vm.define "jenkins" do |jenkins1|
+ jenkins1.vm.box = "sbeliakou/centos"
+ jenkins1.vm.hostname = "jenkins"
+ jenkins1.vm.box_check_update = false
+ jenkins1.vm.network :private_network, ip: "192.168.13.10"
+ jenkins1.vm.provider "virtualbox" do |vb|
+	vb.name = "jenkins"
+	vb.memory = "4096"
+end
+# jenkins1.vm.provision "shell", path: "jenkins_install.sh"
+# end
+#    conf.vm.define "appserver" do |ansible2|
+#    ansible2.vm.box = "sbeliakou/centos"
+#    ansible2.vm.hostname = "appserver"
+#    ansible2.vm.box_check_update = false
+#    ansible2.vm.network :private_network, ip: "192.168.12.20"
+#    ansible2.vm.provider "virtualbox" do |vb1|
+#       vb1.name = "appserver"
+#       vb1.memory = "2048"
+#      	  end
+# # ansible2.vm.provision "shell", path: "appserver_install.sh"
+       end
+     end

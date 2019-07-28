@@ -1,0 +1,37 @@
+---
+# tasks file for jenkins-installation
+
+- name: 'Download Jenkins'
+  get_url:
+    url: "{{ jenkins_archive_url }}"
+    dest: "{{ jenkins_archive_dest }}"
+  become: jenkins
+- name: 'Create a jenkins directory'
+  file:
+    path: "{{ deploying_path }}"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    recurse: yes
+  become: yes
+
+- name: 'Copy jenkins service file'
+  become: yes
+  copy:
+    src: jenkins.service
+    dest: /etc/systemd/system/jenkins.service
+  become: yes
+  # when: ansible_service_mgr == "systemd"
+
+
+- name: Start and enable jenkins
+  service:
+    daemon_reload: yes
+    name: jenkins
+    state: started
+    enabled: yes
+  become: yes
+  async: 45
+  poll: 0
+  # when: ansible_service_mgr == "systemd"
+

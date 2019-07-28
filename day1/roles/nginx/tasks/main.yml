@@ -1,0 +1,37 @@
+---
+# tasks file for nginx
+
+- name: Add Nginx Repository
+  yum_repository:
+    name: Nginx
+    description: Nginx Centos Repo
+    baseurl: http://nginx.org/packages/centos/$releasever/$basearch/
+    gpgcheck: no
+    enabled: yes
+  become: yes
+
+- name: Ensure Nginx Installed
+  yum: name=nginx
+  # notify:
+    # - save nginx details
+  become: yes
+
+# - name: 'Place the index file at project root'
+#   template: src=appserv.conf.j2 dest={{ configpath_reverse }}/appserv.conf owner=apache group=apache mode=0644
+#   become: yes
+#   notify: restart apache
+
+- name: 'Copy nginx config file'
+  become: yes
+  template:
+    src: jenkin.conf.j2
+    dest: /etc/nginx/conf.d/jenkins.conf
+  become: yes
+
+- name: Ensure Nginx Service Running and Enabled
+  service: name=nginx state=started enabled=yes
+  become: yes
+
+# - name: Get Nginx Version
+#   shell: /usr/sbin/nginx -v 2>&1 | awk -F'/' '{print $2}'
+#   register: nginx_version

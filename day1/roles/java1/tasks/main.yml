@@ -1,0 +1,5 @@
+- name: Install Java 8 by YUM
+  yum:
+    name: "{{java.VERSION}}"
+    state: present
+  become: true

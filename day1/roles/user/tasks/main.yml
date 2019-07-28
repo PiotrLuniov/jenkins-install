@@ -1,0 +1,43 @@
+---
+# tasks file for user
+
+
+- name: 'Install basic packages'
+  package:
+    name: ['vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
+    state: present
+  become: yes
+
+- name: Add defined group
+  become: yes
+  group:
+    name: '{{ user_group }}'
+    # gid: "{{ user_groupid }}"
+    state: present
+
+- name: create user
+  become: yes
+  user:
+    name: '{{ user_name }}'
+    group: '{{ user_group }}'
+    # groups: '{{ secondary_groups }}'
+    # uid: "{{ user_id }}"
+    home: "{{ user_home }}"
+    create_home: "{{ cr_home }}"
+
+- name: Configure access over ssh
+  authorized_key:
+    state: present
+    key: "{{ item }}"
+    user: "{{ user_name }}"
+  with_file: "{{ ssh_key_list }}"
+  become: yes
+  become_user: "{{ user_name }}"
+
+- name: Add sudoers privilegy for the user
+  become: yes
+  lineinfile:
+    create: yes
+    dest: "{{ sudoers_dest_path }}/{{ user_name }}"
+    line: "{{ user_name }}  ALL=(ALL:ALL) NOPASSWD: ALL"
+#  when: test_grep.stdout = ""
