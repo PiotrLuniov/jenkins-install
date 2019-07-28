@@ -1,0 +1,3 @@
+jenkins_archive_url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+jenkins_archive_dest: /opt/jenkins
+#tomcat_java_version: "1.{{ tomcat_ver.split('.')[0] }}.0"

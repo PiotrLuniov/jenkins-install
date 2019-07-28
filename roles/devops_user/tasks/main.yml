@@ -1,0 +1,24 @@
+- name: "Create user accounts"
+  become: "yes"
+  group:
+    name: "{{ user_group }}"
+    gid: "{{ user_gid }}"
+    state: present
+- name: "Create user"
+  become: "yes"
+  user:
+    name: "{{ user_name }}"
+    uid: "{{ user_uid }}"
+- name: "Add authorized keys"
+  become: "yes"
+  authorized_key:
+    user: "{{ user_name }}"
+    key: "{{ lookup('file', './files/devops.pub') }}"
+    state: present
+- name: "Allow admin users to sudo without pass"
+  become: "yes"
+  copy:
+    src: "{{ user_name }}"
+    dest: /etc/sudoers.d/"{{ user_name }}"
+    backup: yes
+    validate: /usr/sbin/visudo -cf %s

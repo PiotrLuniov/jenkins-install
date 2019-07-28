@@ -1,0 +1,23 @@
+[Unit]
+Description=Jenkins
+After=network.target
+
+[Service]
+Type=simple
+
+User=jenkins
+Group=jenkins
+
+#Environment=JAVA_HOME: /usr/lib/jvm/jre
+Environment='JAVA_OPTS=-Duser.home=/opt/jenkins \
+                       -Djenkins.install.runSetupWizard=false \
+                       -Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true \
+                       -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London \
+                       -Duser.timezone=Europe/London -Dhttps.protocols=TLSv1.2 \
+                       -Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000'
+
+ExecStart=/usr/bin/java -jar /opt/jenkins/jenkins.war
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

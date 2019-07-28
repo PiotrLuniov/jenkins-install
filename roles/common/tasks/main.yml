@@ -1,0 +1,10 @@
+- name: Add EPEL repository
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install basic packages
+  become: yes
+  package:
+    name: ['python2-pip','vim','htop','unzip', 'wget']
+    state: present

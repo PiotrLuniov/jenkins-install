@@ -1,0 +1,71 @@
+- name: determine if Java is already installed
+  command: which jenkins
+  register: jenkins_task_installed
+  changed_when: jenkins_task_installed.rc != 0
+  failed_when: no
+
+- name: Add "jenkins" user
+  user:
+    name: "{{ jenkins_user }}"
+    uid: "{{ jenkins_user_id }}"
+    group: "{{ jenkins_group }}"
+    home: /opt/jenkins
+    createhome: no
+    system: yes
+  become: yes
+
+- name: Add jenkins group
+  group:
+    name: "{{ jenkins_group }}"
+    gid: "{{ jenkins_group_id }}"
+    state: present
+  become: yes
+
+- name: Create a jenkins directory
+  file:
+    path: /opt/jenkins
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+  become: yes
+
+- name: Download jenkins
+  get_url:
+    url: "{{ jenkins_archive_url }}"
+    dest: "{{ jenkins_archive_dest }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+  become: yes
+
+- name: Copy jenkins service file
+  template:
+    src: templates/jenkins.service.j2
+    dest: /etc/systemd/system/jenkins.service
+  when: ansible_service_mgr == "systemd"
+  become: yes
+
+- name: Start and enable jenkins
+  service:
+    daemon_reload: yes
+    name: jenkins
+    state: started
+    enabled: yes
+  when: ansible_service_mgr == "systemd"
+  become: yes
+
+- name: Start and enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  when: ansible_service_mgr == "systemd"
+  become: yes
+
+- name: Open jenkins port on the firewall
+  firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+    immediate: yes
+  when: ansible_service_mgr == "systemd"
+  become: yes

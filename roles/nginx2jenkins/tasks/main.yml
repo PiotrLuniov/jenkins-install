@@ -1,0 +1,4 @@
+- name: 'add redirect 80 to 8080 jenkins'
+  copy: src=./files/jenkins.conf dest={{ config_reverse }}/jenkins.conf
+  notify: 'redirected'
+  become: yes

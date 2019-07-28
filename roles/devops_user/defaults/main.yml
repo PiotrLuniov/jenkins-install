@@ -1,0 +1,4 @@
+user_name: devops
+user_group: "{{ user_name }}"
+user_uid: "1050"
+user_gid: "1001"
