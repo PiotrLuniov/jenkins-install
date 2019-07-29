@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1 
+kind: Deployment
+metadata:
+  name: jenkins-deployment-volume
+  labels:
+    app: jenkins-volume
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-volume
+  template:
+    metadata:
+      labels:
+        app: jenkins-volume
+    spec:
+      containers:
+      - name: jenkins-volume
+        image: jenkins:2.32.2
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: /var/jenkins_home
+      volumes:
+      - name: jenkins-home
+        persistentVolumeClaim:
+          claimName: localvolume-pvc
+

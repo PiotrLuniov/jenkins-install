@@ -1,6 +1,9 @@
 [jenkins]
 192.168.68.92
 
+[nodes]
+192.168.68.93
+192.168.68.94
 
 [all:vars]
 ansible_user=vagrant

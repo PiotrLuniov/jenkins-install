@@ -1,0 +1,54 @@
+- hosts: all
+  pre_tasks:
+    - setup:
+      tags: always
+  roles:
+    - role: baseConfig
+
+    - role: k8sBase
+      ip: "{{ ansible_eth1.ipv4.address }}"
+
+- hosts: jenkins
+  vars:
+    home: "/home/student/BLEDAI/Kubernetes/Ansible/"
+    url_podNetwork: "https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml"
+    url_metallLb: "https://raw.githubusercontent.com/google/metallb/v0.8.0/manifests/metallb.yaml"
+    set_ip_metalLB: "192.168.68.240/28"
+    url_dashboardInit: "https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml"
+  
+  roles:
+
+    - role: clusterInitialization
+      ip: "{{ ansible_eth1.ipv4.address }}"
+      vagrant: true
+
+    - role: podNetwork
+      source: "{{ url_podNetwork }}"
+      type: flannel
+      user: root
+      vagrant: yes
+
+    - role: metalLB
+      user: root
+      ip_metalLB: "{{ set_ip_metalLB }}"
+      source: "{{ url_metallLb }}"
+
+    - role: nginxIngress
+      user: root
+      
+
+    - role: dashboardInit
+      source_files: "{{ home }}/files/dashboard/*.yml"
+      source_url: "{{ url_dashboardInit }}"
+    
+
+- hosts: nodes
+  roles:
+    
+    - role: joinNode
+- import_playbook: k8sJenkins.yml
+  tags:
+    - jenkinsInstall
+
+
+

@@ -1,0 +1,4 @@
+---
+ip:
+vagrant: false 
+# defaults file for k8sBase

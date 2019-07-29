@@ -1,0 +1,5 @@
+---
+# defaults file for metalLB
+user: root
+ip_metalLB: 
+source: https://raw.githubusercontent.com/google/metallb/v0.8.0/manifests/metallb.yaml

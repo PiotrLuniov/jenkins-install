@@ -1,0 +1,24 @@
+- hosts: jenkins
+  vars:
+    user: root
+    source_files: "templates/jenkins/*yml.j2"
+  tasks:
+    - block:
+      - debug: var=source_files
+      - file:
+          path: /tmp/jenkins
+          state: directory
+      - template:
+          src: "{{ item }}"
+          dest: /tmp/jenkins
+          owner: "{{user}}"
+          group: "{{user}}"
+        register: files 
+        with_fileglob: "{{ source_files }}"
+      - debug: var=files.results
+      - name: jenkinsInit
+        shell: |
+          kubectl apply -f "{{ item.dest }}"
+        with_items: "{{ files.results }}"
+      become: yes
+      become_user: "{{ user }}"
