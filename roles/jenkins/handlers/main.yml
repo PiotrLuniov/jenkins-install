@@ -8,7 +8,7 @@
 
 - name: Restarting Jenkins
   systemd: 
-    state: restart 
+    state: restarted
     name: jenkins
   become: yes
   listen: restarting jenkins
