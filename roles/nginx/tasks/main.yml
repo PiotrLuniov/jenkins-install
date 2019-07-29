@@ -4,11 +4,6 @@
   become: true
   yum: name=nginx
 
-- name: Work with hosts file
-  become: true
-  shell:  |
-    echo "192.168.88.2  jenkins.domain.tld" >> /etc/hosts
-
 - name: Copy config NGINX
   become: true
   copy:
