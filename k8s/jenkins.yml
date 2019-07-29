@@ -10,16 +10,15 @@ spec:
       labels:
         app: master
     spec:
+      volumes:
+      - name: jhome
+        emptyDir: {}
       containers:
       - name: master
-        image: jenkinsci/blueocean
+        image: jenkins/jenkins:lts
+        volumeMounts:
+        - name: jhome
+          mountPath: /var/jenkins_home
         ports:
         - containerPort: 8080
         - containerPort: 50000
-        resources:
-          limits:
-            cpu: 500m
-            memory: 1500Mi
-          requests:
-            cpu: 500m
-            memory: 1500Mi
