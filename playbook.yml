@@ -1,0 +1,7 @@
+- hosts: jservers
+  roles:
+  - user
+  - java
+  - jenkins
+  - nginx
+

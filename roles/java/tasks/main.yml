@@ -1,0 +1,8 @@
+- name: 2.1. Make sure that we can connect to the machine
+  ping:
+
+- name: 2.2. Java install
+  yum:
+    name: java-{{java_version}}-openjdk-devel
+    state: present
+  become: yes

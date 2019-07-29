@@ -1,0 +1,12 @@
+[all:vars]
+
+ansible_user=root
+ansible_password=vagrant
+
+jenkins_user=jenkins
+jenkins_group=jenkins
+jenkins_dir=/opt/jenkins
+
+[jservers]
+jserver1 ansible_host=192.168.56.225
+

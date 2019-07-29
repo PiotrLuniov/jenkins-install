@@ -1,0 +1,33 @@
+- name: NGINX 1 Install epel
+  become: yes
+  package:
+    name: epel-release
+
+- name: NGINX 2 Install nginx
+  become: yes
+  package:
+    name: nginx
+    state: latest
+
+- name: NGINX 3 Patch nginx.conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    state: absent
+    regexp: '::'
+  become: yes
+  notify: "restart nginx"
+
+- name: NGINX 4 Copy custom conf
+  become: yes
+  copy:
+    src: jenkins.conf
+    dest: /etc/nginx/conf.d/
+  notify: "restart nginx"
+
+- name: NGINX 5 Start nginx
+  become: yes
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+

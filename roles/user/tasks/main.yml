@@ -1,0 +1,29 @@
+- name: 1. Create group 'jenkins'
+  group:
+    name: "{{ jenkins_group }}"
+  become: true
+
+- name: 2. Add the user 'jenkins' with a primary group of 'jenkins'
+  user:
+    name: "{{ jenkins_user }}"
+    password: password
+    group: "{{ jenkins_group }}"
+  become: true
+
+- name: 3. Add authorized keys for user 'jenkins'
+  authorized_key:
+    key: "{{lookup('file','/home/user/.ssh/id_rsa.pub')}}"
+    user: "{{ jenkins_user }}"
+    exclusive: yes
+    manage_dir: yes
+    state: present
+  become: true
+
+- name: 4. Allow user 'jenkins' to sudo without a password
+  copy:
+    src: jenkins
+    dest: /etc/sudoers.d/
+    backup: yes
+    validate: /usr/sbin/visudo -cf %s
+  become: true
+

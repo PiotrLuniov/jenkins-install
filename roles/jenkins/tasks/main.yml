@@ -1,0 +1,29 @@
+- name: JENKINS 1. Create jenkins directory
+  become: yes
+  file:
+    path: "{{ jenkins_dir }}"
+    state: directory
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+
+- name: JENKINS 2. Download war with jenkins
+  become: yes
+  get_url:
+    url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+    dest: "{{ jenkins_dir }}"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_group }}"
+
+- name: JENKINS 3. Copy jenkins.service file to systemd
+  become: yes
+  copy:
+    src: jenkins.service
+    dest: /usr/lib/systemd/system/
+  notify: "restart jenkins"
+
+- name: JENKINS 4. Start jenkins service
+  become: yes
+  service:
+    name: jenkins.service
+    state: started
+    enabled: yes
