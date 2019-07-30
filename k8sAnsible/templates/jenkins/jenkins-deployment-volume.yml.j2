@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: jenkins-volume
-        image: jenkins:2.32.2
+        image: jenkins/jenkins:lts
         ports:
         - containerPort: 8080
         volumeMounts:
@@ -25,5 +25,5 @@ spec:
       volumes:
       - name: jenkins-home
         persistentVolumeClaim:
-          claimName: nfs
+          claimName: jenkins-pvc
 
