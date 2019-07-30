@@ -11,13 +11,15 @@ spec:
         app: master
     spec:
       volumes:
-      - name: jhome
-        emptyDir: {}
+      - name: jenkins-home
+        hostPath:
+          path: /home/student/jenkins_home
+          type: Directory
       containers:
       - name: master
         image: jenkins/jenkins:lts
         volumeMounts:
-        - name: jhome
+        - name: jenkins-home
           mountPath: /var/jenkins_home
         ports:
         - containerPort: 8080
