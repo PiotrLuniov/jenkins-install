@@ -1,0 +1,16 @@
+---
+# tasks file for java
+- name: Esure Ansible Facts Dir exists
+  file: path=/etc/ansible/facts.d state=directory recurse=yes
+  become: yes
+
+- name: Install OpenJDK
+  yum:
+    name: java-{{ jdk_release }}-openjdk
+  become: yes
+  no_log: yes
+  notify: save java facts
+
+- name: Java Version
+  shell: java -version 2>&1 | grep version | sed 's/[^0-9._]//g'
+  register: java_version

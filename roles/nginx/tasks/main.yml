@@ -1,0 +1,28 @@
+---
+# tasks file for nginx
+- name: install nginx
+  package:
+    name: nginx
+    state: installed
+  become: yes
+
+- name: copy nginx default config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx
+  become: yes
+
+- name: copy jenkins_nginx config
+  copy:
+    src: jenkins_nginx.conf
+    dest: /etc/nginx/conf.d/jenkins_nginx.conf
+  notify: restart nginx
+  become: yes
+
+- name: run nginx
+  service:
+    name: nginx
+    enabled: yes
+    state: started
+  become: yes

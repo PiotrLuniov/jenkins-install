@@ -1,0 +1,21 @@
+[Unit]
+Description=Jenkins Service
+After=network.target
+
+[Service]
+Type=simple
+User={{ jenkins_user }}
+Group={{ jenkins_group }}
+ExecStart=/usr/bin/java -Duser.home={{jenkins_home_path }} \
+-Djava.awt.headless=true -Dhudson.plugins.git.GitSCM.verbose=true \
+-Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London \
+-Duser.timezone=Europe/London -Dhttps.protocols=TLSv1.2 \
+-Dorg.eclipse.jetty.server.Request.maxFormContentSize=5000000 \
+-Dhudson.plugins.parameterizedtrigger.ProjectSpecificParametersActionFactory.compatibility_mode=true \
+-Dpermissive-script-security.enabled=true -XX:MaxMetaspaceSize=1g \
+-XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC \
+-Xms1000m -Xmx3000m -Dcom.sun.management.jmxremote.ssl=false -jar "{{ jenkins_war_path }}"
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
