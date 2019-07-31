@@ -8,12 +8,8 @@ Vagrant.configure("2") do |config|
    webserver.vm.hostname = "jenkins"
    webserver.vm.provider "virtualbox" do |vb|
    webserver.vm.provision "ansible" do |ansible|
-       ansible.playbook = "playbook.yml"
-       ansible.inventory_path = "inventory"
-       ansible.limit = "all"
        ansible.verbose = "v"
      end
-
      vb.memory = 1024
      vb.name = "jenkins_day1"
    end 
