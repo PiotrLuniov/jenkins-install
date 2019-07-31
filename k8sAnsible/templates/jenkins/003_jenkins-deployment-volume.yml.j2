@@ -17,6 +17,8 @@ spec:
       containers:
       - name: jenkins-volume
         image: jenkins/jenkins:lts
+        securityContext:
+          privileged: true
         ports:
         - containerPort: 8080
         volumeMounts:
@@ -25,5 +27,5 @@ spec:
       volumes:
       - name: jenkins-home
         persistentVolumeClaim:
-          claimName: jenkins-pvc
+          claimName: jenkins-home-pvc
 

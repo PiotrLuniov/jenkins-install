@@ -16,9 +16,19 @@
         register: files 
         with_fileglob: "{{ source_files }}"
       - debug: var=files.results
+      - shell: |
+          kubectl create ns jenkins
       - name: jenkinsInit
         shell: |
-          kubectl apply -f "{{ item.dest }}"
+          kubectl apply -f "{{ item.dest }}" -n jenkins
         with_items: "{{ files.results }}"
+      - name: jenkinsDestroy
+        shell: |
+          kubectl delete -f "{{ item.dest }}" -n jenkins
+        with_items: "{{ files.results }}"
+        tags:
+          - never
+          - destroy
       become: yes
       become_user: "{{ user }}"
+     

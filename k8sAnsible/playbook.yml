@@ -7,6 +7,8 @@
 
     - role: k8sBase
       ip: "{{ ansible_eth1.ipv4.address }}"
+      vagrant: yes
+      tags: kube
 
 - hosts: jenkins
   vars:
@@ -33,6 +35,7 @@
       ip_metalLB: "{{ set_ip_metalLB }}"
       source: "{{ url_metallLb }}"
 
+
     - role: nginxIngress
       user: root
       
@@ -46,9 +49,22 @@
   roles:
     
     - role: joinNode
+  tasks:
+    - shell: |
+        sudo yum install java-1.8.0-openjdk-devel -y
+        mkdir /tmp/pv1
+        mkdir /tmp/pv2
+        mkdir /tmp/pv3
+        chmod 777 /tmp/pv1
+        chmod 777 /tmp/pv2
+        chmod 777 /tmp/pv3
+      tags:
+        - jenkinsInstall
+
 - import_playbook: k8sJenkins.yml
   tags:
     - jenkinsInstall
+
 
 
 

@@ -18,6 +18,8 @@
     shell: |
       nohup /bin/java {{java_vars_shell}} -jar {{jenkins_home}}jenkins.war  &
     become_user: jenkins
+    become: yes
+    tags: start_jenkins
   become: yes
 - block:
   - template:

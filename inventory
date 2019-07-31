@@ -6,6 +6,8 @@
 192.168.68.94
 
 [all:vars]
+master_ip=192.168.68.92
+token=abcdef.0123456789abcdef
 ansible_user=vagrant
 ansible_private_key_file=/home/student/.vagrant.d/insecure_private_key
 

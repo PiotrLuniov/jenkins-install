@@ -14,14 +14,14 @@ Vagrant.configure("2") do |config|
     :hostname => "node1",
     :ip => ip[1],
     :box => "sbeliakou/centos",
-    :ram => 2048,
+    :ram => 2068,
     :cpu => 2,
   },
   {
     :hostname => "node2",
     :ip => ip[2],
     :box => "sbeliakou/centos",
-    :ram => 2048,
+    :ram => 4068,
     :cpu => 2,
   }
 ]
@@ -36,11 +36,11 @@ k = 0
           end
       if k == 2
         node.vm.provision "ansible" do |ansible|
-        ansible.playbook = "Ansible/provision.yml"
-        #ansible.playbook = "k8sAnsible/playbook.yml"
+        #ansible.playbook = "Ansible/provision.yml"
+        ansible.playbook = "k8sAnsible/playbook.yml"
         ansible.limit = "all"
         ansible.inventory_path = "inventory"
-        ansible.verbose = "vv"
+        ##ansible.verbose = "v"
           end 
       else
         k += 1

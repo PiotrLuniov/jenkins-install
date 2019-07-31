@@ -56,6 +56,7 @@ dependencies:
     - role: java
       java_set_javahome: no
       java_version: "11.0.4"
+      used_openjdk: yes
 
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
